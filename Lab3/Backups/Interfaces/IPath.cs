@@ -6,6 +6,5 @@ public interface IPath
     IPath Merge(IPath path);
     IPath Merge(string path);
     IPath GetFullPath();
-    bool Equals(IPath path);
     IPath GetName();
 }

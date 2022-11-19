@@ -5,9 +5,9 @@ namespace Backups.Entities;
 
 public class RepoObjectVisitor : IRepoObjectVisitor
 {
-    private ZipArchive _archive;
-    private Stack<IPath> _zipArchivePaths = new Stack<IPath>();
-    private Stack<List<IStorageObject>> _storageObjects = new Stack<List<IStorageObject>>();
+    private readonly ZipArchive _archive;
+    private readonly Stack<IPath> _zipArchivePaths = new Stack<IPath>();
+    private readonly Stack<List<IStorageObject>> _storageObjects = new Stack<List<IStorageObject>>();
 
     public RepoObjectVisitor(ZipArchive zipArchive)
     {

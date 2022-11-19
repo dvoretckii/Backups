@@ -1,13 +1,15 @@
-﻿namespace Backups.Models;
+﻿using Backups.Interfaces;
+
+namespace Backups.Models;
 
 public class RestorePoint
 {
-    public RestorePoint(DateTime dateTime, IReadOnlyList<RestorePointPair> pairs)
+    public RestorePoint(DateTime dateTime, IReadOnlyList<IRepoObject> pairs)
     {
         DateTime = dateTime;
         Pairs = pairs;
     }
 
     public DateTime DateTime { get; }
-    public IReadOnlyList<RestorePointPair> Pairs { get; }
+    public IReadOnlyList<IRepoObject> Pairs { get; }
 }

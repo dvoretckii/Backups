@@ -4,7 +4,7 @@ namespace Backups.Entities;
 
 public class RepoFolder : IRepoFolder
 {
-    private Func<IReadOnlyList<IRepoObject>> _childernFunc;
+    private readonly Func<IReadOnlyList<IRepoObject>> _childernFunc;
 
     public RepoFolder(Func<IReadOnlyList<IRepoObject>> childernFunc, IPath path)
     {

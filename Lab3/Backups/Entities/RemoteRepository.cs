@@ -6,7 +6,7 @@ namespace Backups.Entities;
 
 public class RemoteRepository : IRepository
 {
-    private IFileSystem _fileSystem;
+    private readonly IFileSystem _fileSystem;
 
     public RemoteRepository(IFileSystem fileSystem)
     {

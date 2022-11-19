@@ -12,11 +12,13 @@ namespace Backups.Test
     public class Test
     {
         [Fact]
-        public void AddBackupObjects_ExecuteBackupTask()
+        public void Test1()
         {
             IFileSystem fileSystem = new MemoryFileSystem();
-            IPath pathA = new Path("/Users/s.a.dvoretskiy/RiderProjects/dvoretckii/Lab3/Backups/a.txt");
-            var pathB = new Path("/Users/s.a.dvoretskiy/RiderProjects/dvoretckii/Lab3/Backups/b.txt");
+            IPath pathA = new Path("/Test1/a.txt");
+            IPath pathB = new Path("/Test2/b.txt");
+            IPath dirPathA = new Path("/Test1/");
+            IPath dirPathB = new Path("/Test2/");
             fileSystem.CreateDirectory(pathA.GetFullPath().ToString());
             fileSystem.CreateFile(pathA.ToString()).Close();
             fileSystem.CreateDirectory(pathB.GetFullPath().ToString());
@@ -27,10 +29,10 @@ namespace Backups.Test
             IArchive archive = new Archive();
             var config = new Config(storageAlgorithm, repository, archive);
 
-            var objectA = new BackupObject(pathA, repository);
-            var objectB = new BackupObject(pathB, repository);
+            IRepoObject objectA = repository.GetObject(pathA);
+            IRepoObject objectB = repository.GetObject(pathB);
 
-            IPath backupTaskDirName = new Path("/Users/s.a.dvoretskiy/RiderProjects/dvoretckii/Lab3/Backups/Testing");
+            IPath backupTaskDirName = new Path("/Test3/");
             var backupTask = new BackupTask(config, backupTaskDirName);
 
             backupTask.AddBackupObject(objectA);

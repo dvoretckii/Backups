@@ -2,7 +2,7 @@
 {
     public class Backup
     {
-        private List<RestorePoint> _savedBackup = new List<RestorePoint>();
+        private readonly List<RestorePoint> _savedBackup = new List<RestorePoint>();
 
         public IReadOnlyList<RestorePoint> CheckSavedBackups => _savedBackup.AsReadOnly();
 

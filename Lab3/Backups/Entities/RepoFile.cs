@@ -4,7 +4,7 @@ namespace Backups.Entities;
 
 public class RepoFile : IRepoFile
 {
-    private Func<Stream> _func;
+    private readonly Func<Stream> _func;
 
     public RepoFile(Func<Stream> func, IPath path)
     {
@@ -14,13 +14,7 @@ public class RepoFile : IRepoFile
 
     public IPath Path { get; }
 
-    public Stream Stream
-    {
-        get
-        {
-            return _func();
-        }
-    }
+    public Stream Stream => _func();
 
     public void Accept(IRepoObjectVisitor visitor)
     {

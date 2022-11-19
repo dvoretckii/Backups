@@ -17,18 +17,10 @@ public class Path : IPath
         return _path.ToString();
     }
 
-    public bool Equals(IPath path)
-    {
-        return this is not null &&
-               path is not null &&
-               ToString() == path.ToString();
-    }
-
     public IPath GetFullPath()
     {
-        UPath path = _path;
-        var cp = new Path(path);
-        return cp;
+        var newPath = new Path(_path.GetDirectory().ToAbsolute().ToString());
+        return newPath;
     }
 
     public IPath GetName()

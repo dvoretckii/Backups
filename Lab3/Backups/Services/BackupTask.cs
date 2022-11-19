@@ -7,7 +7,7 @@ namespace Backups.Services;
 
 public class BackupTask
 {
-    private List<BackupObject> _backupObjects = new List<BackupObject>();
+    private List<IRepoObject> _backupObjects = new List<IRepoObject>();
     private IPath _rootDir;
 
     public BackupTask(Config configuration, IPath rootDir)
@@ -19,37 +19,29 @@ public class BackupTask
 
     public Backup Backups { get; }
     public Config Configuration { get; }
-    public IReadOnlyCollection<BackupObject> BackupObjects => _backupObjects.AsReadOnly();
+    public IReadOnlyList<IRepoObject> BackupObjects => _backupObjects.AsReadOnly();
 
     public void Backup()
     {
         DateTime backupTime = DateTime.Now;
-        IPath fullRestorePointPath = _rootDir.Merge($"/{backupTime.ToString(CultureInfo.InvariantCulture)}");
+        IPath fullRestorePointPath = _rootDir.Merge($"/{backupTime.ToString(CultureInfo.CurrentCulture).Replace(":", "_").Replace("/", "_").Replace(" ", "_")}");
         IReadOnlyList<IStorage> storages = Configuration.Alghoritm.Store(_backupObjects.AsReadOnly(), fullRestorePointPath, Configuration.Archive, Configuration.Repository, backupTime);
-        var list = new List<RestorePointPair>();
-        foreach ((BackupObject, IStorage) pair in _backupObjects.Zip(storages))
-        {
-            var restorePointPair = new RestorePointPair(pair.Item1, pair.Item2);
-        }
-
-        list.AsReadOnly();
-        var restorePoint = new RestorePoint(backupTime, list);
+        var restorePoint = new RestorePoint(backupTime, BackupObjects);
         Backups.AddRestorePoint(restorePoint);
     }
 
-    public void AddBackupObject(BackupObject backupObject)
+    public void AddBackupObject(IRepoObject backupObject)
     {
-        // смотрим есть ли такой путь дефолтное добавление
-        BackupObject? back = _backupObjects.Find(x => x.Path.Equals(backupObject.Path));
+        IRepoObject? back = _backupObjects.Find(x => x.Path.Equals(backupObject.Path));
         if (back == null)
         {
             _backupObjects.Add(backupObject);
         }
     }
 
-    public void RemoveBackupObject(Predicate<BackupObject> predicate)
+    public void RemoveBackupObject(Predicate<IRepoObject> predicate)
     {
-        BackupObject? backupObject = _backupObjects.Find(predicate);
+        IRepoObject? backupObject = _backupObjects.Find(predicate);
         if (backupObject == null)
         {
             throw new Exception();
