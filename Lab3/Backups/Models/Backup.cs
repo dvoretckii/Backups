@@ -1,6 +1,8 @@
-﻿namespace Backups.Models
+﻿using Backups.Interfaces;
+
+namespace Backups.Models
 {
-    public class Backup
+    public class Backup : IBackup
     {
         private readonly List<RestorePoint> _savedBackup = new List<RestorePoint>();
 

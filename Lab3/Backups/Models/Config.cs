@@ -2,7 +2,7 @@
 
 namespace Backups.Models;
 
-public class Config
+public class Config : IConfig
 {
     public Config(IStorageAlghoritm alghoritm, IRepository repository, IArchive archive)
     {

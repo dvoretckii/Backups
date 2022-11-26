@@ -1,4 +1,5 @@
-﻿using Backups.Interfaces;
+﻿using System.IO.Compression;
+using Backups.Interfaces;
 
 namespace Backups.Entities;
 
@@ -13,4 +14,8 @@ public class ZipFolder : IStorageObject
     }
 
     public IPath Path { get; }
+    public IRepoObject ToRepoObject(ZipArchive archive)
+    {
+        return new RepoFolder(() => _children.Select(x => x.ToRepoObject(archive)).ToList(), Path);
+    }
 }

@@ -4,5 +4,5 @@ namespace Backups.Interfaces;
 
 public interface IStorageAlghoritm
 {
-    IReadOnlyList<IStorage> Store(IReadOnlyList<IRepoObject> fileSystemObjects, IPath restorePointPath, IArchive archive, IRepository repository, DateTime dateTime);
+    IStorage Store(IReadOnlyList<IRepoObject> fileSystemObjects, IPath restorePointPath, IArchive archive, IRepository repository, DateTime dateTime);
 }

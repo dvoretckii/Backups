@@ -1,4 +1,5 @@
-﻿using Backups.Interfaces;
+﻿using Backups.Exceptions;
+using Backups.Interfaces;
 using Zio;
 using Zio.FileSystems;
 
@@ -30,7 +31,7 @@ public class RemoteRepository : IRepository
             return new RepoFolder(getChildrenFunctor, path);
         }
 
-        throw new Exception();
+        throw BackupsException.ElementNotFound();
     }
 
     public Stream Write(IPath path)

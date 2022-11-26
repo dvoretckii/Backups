@@ -1,4 +1,5 @@
-﻿using Backups.Interfaces;
+﻿using Backups.Exceptions;
+using Backups.Interfaces;
 
 namespace Backups.Entities;
 
@@ -21,7 +22,7 @@ public class LocalRepository : IRepository
             return new RepoFolder(childrenFunctor, path);
         }
 
-        throw new Exception();
+        throw BackupsException.ElementNotFound();
     }
 
     public Stream Write(IPath path)

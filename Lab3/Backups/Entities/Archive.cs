@@ -9,7 +9,7 @@ public class Archive : IArchive
 {
     public IStorage Collect(IReadOnlyList<IRepoObject> repoObjects, IPath path, IRepository repository, DateTime dateTime)
     {
-        IPath zipFilePath = path.Merge($"{dateTime.ToString(CultureInfo.InvariantCulture).Replace(":", "_").Replace("/", "_").Replace(" ", "_")}.zip");
+        IPath zipFilePath = path.Merge($"{dateTime.ToString("yyyy_MM_dd_hh_mm_ss_FFFFFF")}.zip");
         RepoObjectVisitor zipVisitor;
         using (Stream archiveStream = repository.Write(zipFilePath))
         {

@@ -1,50 +1,52 @@
 ﻿using System.Globalization;
 using Backups.Entities;
+using Backups.Exceptions;
 using Backups.Interfaces;
 using Backups.Models;
 
 namespace Backups.Services;
 
-public class BackupTask
+public class BackupTask : IBackupTask
 {
-    private List<IRepoObject> _backupObjects = new List<IRepoObject>();
+    private List<BackupObject> _backupObjects = new List<BackupObject>();
     private IPath _rootDir;
+    private Backup _backup;
 
     public BackupTask(Config configuration, IPath rootDir)
     {
-        Backups = new Backup();
+        _backup = new Backup();
         Configuration = configuration;
         _rootDir = rootDir;
     }
 
-    public Backup Backups { get; }
-    public Config Configuration { get; }
-    public IReadOnlyList<IRepoObject> BackupObjects => _backupObjects.AsReadOnly();
+    public IReadOnlyList<RestorePoint> RestorePoints => _backup.CheckSavedBackups;
+    public IConfig Configuration { get; }
+    public IReadOnlyList<BackupObject> BackupObjects => _backupObjects.AsReadOnly();
 
     public void Backup()
     {
         DateTime backupTime = DateTime.Now;
-        IPath fullRestorePointPath = _rootDir.Merge($"/{backupTime.ToString(CultureInfo.CurrentCulture).Replace(":", "_").Replace("/", "_").Replace(" ", "_")}");
-        IReadOnlyList<IStorage> storages = Configuration.Alghoritm.Store(_backupObjects.AsReadOnly(), fullRestorePointPath, Configuration.Archive, Configuration.Repository, backupTime);
-        var restorePoint = new RestorePoint(backupTime, BackupObjects);
-        Backups.AddRestorePoint(restorePoint);
+        IPath fullRestorePointPath = _rootDir.Merge($"/{backupTime.ToString("yyyy_dd_MM_hh_mm_ss")}");
+        IStorage storage = Configuration.Alghoritm.Store(_backupObjects.Select(x => x.RepositoryObject).ToList(), fullRestorePointPath, Configuration.Archive, Configuration.Repository, backupTime);
+        var restorePoint = new RestorePoint(backupTime, BackupObjects, storage);
+        _backup.AddRestorePoint(restorePoint);
     }
 
-    public void AddBackupObject(IRepoObject backupObject)
+    public void AddBackupObject(BackupObject backupObject)
     {
-        IRepoObject? back = _backupObjects.Find(x => x.Path.Equals(backupObject.Path));
+        BackupObject? back = _backupObjects.Find(x => x.Path.Equals(backupObject.Path));
         if (back == null)
         {
             _backupObjects.Add(backupObject);
         }
     }
 
-    public void RemoveBackupObject(Predicate<IRepoObject> predicate)
+    public void RemoveBackupObject(Predicate<BackupObject> predicate)
     {
-        IRepoObject? backupObject = _backupObjects.Find(predicate);
+        BackupObject? backupObject = _backupObjects.Find(predicate);
         if (backupObject == null)
         {
-            throw new Exception();
+            throw BackupsException.NullableVariable();
         }
 
         _backupObjects.Remove(backupObject);

@@ -5,9 +5,9 @@ namespace Backups.Entities;
 
 public class SingleStorageAlghorithm : IStorageAlghoritm
 {
-    public IReadOnlyList<IStorage> Store(IReadOnlyList<IRepoObject> fileSystemObjects, IPath restorePointPath, IArchive archive, IRepository repository, DateTime dateTime)
+    public IStorage Store(IReadOnlyList<IRepoObject> fileSystemObjects, IPath restorePointPath, IArchive archive, IRepository repository, DateTime dateTime)
     {
         IStorage storage = archive.Collect(fileSystemObjects, restorePointPath, repository, dateTime);
-        return Enumerable.Repeat(storage, fileSystemObjects.Count).ToList().AsReadOnly();
+        return storage;
     }
 }

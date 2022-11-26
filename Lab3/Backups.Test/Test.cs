@@ -29,8 +29,8 @@ namespace Backups.Test
             IArchive archive = new Archive();
             var config = new Config(storageAlgorithm, repository, archive);
 
-            IRepoObject objectA = repository.GetObject(pathA);
-            IRepoObject objectB = repository.GetObject(pathB);
+            var objectA = new BackupObject(pathA, repository);
+            var objectB = new BackupObject(pathB, repository);
 
             IPath backupTaskDirName = new Path("/Test3/");
             var backupTask = new BackupTask(config, backupTaskDirName);
