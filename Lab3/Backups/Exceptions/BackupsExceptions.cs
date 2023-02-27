@@ -14,4 +14,14 @@ public class BackupsException : Exception
     {
         return new BackupsException("The result is null");
     }
+
+    public static BackupsException ElementAlreadyExist()
+    {
+        return new BackupsException("Element already exist");
+    }
+
+    public static BackupsException IncorrectPath()
+    {
+        return new BackupsException("Path should not have whitespaces or be empty");
+    }
 }

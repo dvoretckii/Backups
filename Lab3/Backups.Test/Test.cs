@@ -1,11 +1,14 @@
-﻿using Backups.Entities;
-using Backups.Interfaces;
-using Backups.Models;
-using Backups.Services;
+﻿using Backups.Entities.Alghorithms;
+using Backups.Entities.Archives;
+using Backups.Entities.Paths;
+using Backups.Entities.Repositories;
+using Backups.Models.BackupObject;
+using Backups.Models.Configs;
+using Backups.Services.BackupTasks;
 using Xunit;
 using Zio;
 using Zio.FileSystems;
-using Path = Backups.Entities.Path;
+using Path = Backups.Entities.Paths.Path;
 
 namespace Backups.Test
 {
